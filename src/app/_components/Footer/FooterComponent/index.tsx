@@ -7,47 +7,49 @@ import { usePathname } from 'next/navigation'
 
 import { Footer, Media } from '../../../../payload/payload-types'
 import { inclusions, noHeaderFooterUrls, profileNavItems } from '../../../constants'
+import { Button } from '../../Button'
 import { Gutter } from '../../Gutter'
 
 import classes from './index.module.scss'
-import { Button } from '../../Button'
 
-type Props = {
-  footer: Footer
-}
-
-const FooterComponent = ({ footer }: Props) => {
-  const pathName = usePathname()
+const FooterComponent = ({ footer }: { footer: Footer }) => {
+  const pathname = usePathname()
   const navItems = footer?.navItems || []
+
   return (
-    <footer className={noHeaderFooterUrls.includes(pathName) ? classes.hide : ''}>
+    <footer className={noHeaderFooterUrls.includes(pathname) ? classes.hide : ''}>
       <Gutter>
         <ul className={classes.inclusions}>
-          {inclusions.map((inclusion, index) => (
+          {inclusions.map(inclusion => (
             <li key={inclusion.title}>
               <Image
                 src={inclusion.icon}
-                height={36}
-                width={36}
                 alt={inclusion.title}
+                width={36}
+                height={36}
                 className={classes.icon}
               />
+
               <h5 className={classes.title}>{inclusion.title}</h5>
               <p>{inclusion.description}</p>
             </li>
           ))}
         </ul>
       </Gutter>
+
       <div className={classes.footer}>
         <Gutter>
           <div className={classes.wrap}>
             <Link href="/">
               <Image src="/logo-white.svg" alt="logo" width={170} height={50} />
             </Link>
-            <p>{footer.copyright}</p>
+
+            <p>{footer?.copyright}</p>
+
             <div className={classes.socialLinks}>
               {navItems.map(item => {
                 const icon = item?.link?.icon as Media
+
                 return (
                   <Button
                     key={item.link.label}
